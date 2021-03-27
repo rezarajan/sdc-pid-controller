@@ -33,8 +33,10 @@ class PID {
 
   /**
    * Optimize PID gains using the Twiddle algorithm
+   * @param cte The current cross track error
    */
-  double Twiddle();
+  void Twiddle(double cte);
+  // void UpdateTwiddle(double cte);
 
  private:
   /**
@@ -50,6 +52,21 @@ class PID {
   double Kp;
   double Ki;
   double Kd;
+
+  /**
+   * Twiddle differentials
+   */
+  double dp;
+  double di;
+  double dd;
+  double best_err;
+  double avg_cte;
+  /**
+   * Twiddle Flags
+   */
+  int counter;
+  int avg_interval;
+  bool reverse_check;
 };
 
 #endif  // PID_H

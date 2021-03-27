@@ -38,7 +38,8 @@ int main() {
   /**
    * TODO: Initialize the pid variable.
    */
-  pid.Init(1,1,1);
+  // pid.Init(9.48728,0,2);
+  pid.Init(8.00501,0,2);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -65,7 +66,13 @@ int main() {
            * NOTE: Feel free to play around with the throttle and speed.
            *   Maybe use another PID controller to control the speed!
            */
+          // Update PID errors
           pid.UpdateError(cte);
+          // Apply Twiddle Optimization
+          // pid.UpdateTwiddle(cte);
+          // Update d_gains and wait for the robot to move
+          pid.Twiddle(cte);
+          // Calculate New Steering Value
           steer_value = std::max(-1.0, std::min(pid.TotalError(), 1.0));
           
           // DEBUG
@@ -74,7 +81,7 @@ int main() {
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.3;
+          msgJson["throttle"] = 0.1;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
