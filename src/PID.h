@@ -31,6 +31,11 @@ class PID {
    */
   double TotalError();
 
+  /**
+   * Optimize PID gains using the Twiddle algorithm
+   */
+  double Twiddle();
+
  private:
   /**
    * PID Errors

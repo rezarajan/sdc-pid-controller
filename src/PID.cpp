@@ -24,12 +24,9 @@ void PID::UpdateError(double cte) {
   /**
    * ~TODO~: Update PID errors based on cte.
    */
-  p_error = Kp * cte;
-  i_error += Ki * cte;
-  d_error = Kd * (cte - d_error);
-  /**
-   * TODO: create time variable for timestep in updating the differential error
-   */ 
+  p_error = cte;
+  i_error += cte;
+  d_error = cte - d_error;
 
 }
 
@@ -37,5 +34,8 @@ double PID::TotalError() {
   /**
    * ~TODO~: Calculate and return the total error
    */
-  return p_error + i_error + d_error;  // TODO: Add your total error calc here!
+  /**
+   * TODO: create time variable for timestep in updating the differential error
+   */ 
+  return -Kp*p_error -Ki*i_error - Kd*d_error;  // TODO: Add your total error calc here!
 }
