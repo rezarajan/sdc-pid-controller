@@ -1,5 +1,6 @@
 #ifndef PID_H
 #define PID_H
+#include <vector>
 
 class PID {
  public:
@@ -67,6 +68,10 @@ class PID {
   int counter;
   int avg_interval;
   bool reverse_check;
+  bool check_next;
+  std::vector<bool> reverse_checks;
+  enum class TwiddleParam {P,I,D};
+  TwiddleParam param;
 };
 
 #endif  // PID_H

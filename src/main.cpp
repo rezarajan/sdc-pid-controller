@@ -39,7 +39,7 @@ int main() {
    * TODO: Initialize the pid variable.
    */
   // pid.Init(9.48728,0,2);
-  pid.Init(8.00501,0,2);
+  pid.Init(4,0,2);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -71,19 +71,19 @@ int main() {
           // Apply Twiddle Optimization
           // pid.UpdateTwiddle(cte);
           // Update d_gains and wait for the robot to move
-          pid.Twiddle(cte);
+          // pid.Twiddle(cte);
           // Calculate New Steering Value
           steer_value = std::max(-1.0, std::min(pid.TotalError(), 1.0));
           
           // DEBUG
-          std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
-                    << std::endl;
+          // std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
+          //           << std::endl;
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.1;
+          msgJson["throttle"] = 0.3;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-          std::cout << msg << std::endl;
+          // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }  // end "telemetry" if
       } else {
