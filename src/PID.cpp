@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <chrono>
 
 using std::string;
 
@@ -22,24 +23,43 @@ void PID::Init(double Kp_, double Ki_, double Kd_) {
   Kd = Kd_;
 
   p_error = 0, i_error = 0, d_error = 0;
-  dp = 1, di = 0, dd = 1;
+  // dp = 0.025, di = 0, dd = 0.25;
+  dp = 0.0025, di = 0, dd = 0.0025;
   best_err = 9999;
   counter = 0;
-  avg_interval = 500;
+  avg_interval = 200;
   avg_cte = 0;
   reverse_check = false;
   check_next = false;
   param = TwiddleParam::P;
 
+  auto t0 = Time::now();
 }
 
 void PID::UpdateError(double cte) {
   /**
    * ~TODO~: Update PID errors based on cte.
    */
-  p_error = cte;
+  // Find the time interval between readings
+  // auto t1 = Time::now();
+  // fsec fs = t1 - t0;
+  // t0 = t1;
+
+  
   i_error += cte;
-  d_error = cte - d_error;
+  d_error = cte - p_error;
+  // double d_error_ = (cte - p_error)/fs.count();
+  // d_error = (cte - p_error)/fs.count();
+  p_error = cte;
+  // std::cout << "D Error: " << d_error << std::endl;
+  // std::cout << "D Error (Timestepped): " << d_error_ << std::endl;
+  // if(fs.count() >= 1.0){
+    // std::cout << "I Error: " << i_error << std::endl;
+  // }
+  // std::cout << "P Error: " << p_error << std::endl;
+  // std::cout << "I Error: " << i_error << std::endl;
+  // std::cout << "D Error: " << d_error << std::endl;
+  // std::cout << "D Duration: " << fs.count() << std::endl;
 
 }
 
@@ -47,9 +67,6 @@ double PID::TotalError() {
   /**
    * ~TODO~: Calculate and return the total error
    */
-  /**
-   * TODO: create time variable for timestep in updating the differential error
-   */ 
   return -Kp*p_error -Ki*i_error - Kd*d_error;  // TODO: Add your total error calc here!
 }
 
@@ -93,11 +110,14 @@ void PID::Twiddle(double cte){
     // std::cout << "Counter: " << counter << std::endl;
   }
   else{
-    std::cout << "Current " << print_statement << ": " << K << std::endl;
+    // std::cout << "Current " << print_statement << ": " << K << std::endl;
     avg_cte /= counter;
-    if(dp > 0.2){
+    double sum = dp + di + dd;
+    if(sum > 0.002){
       double sq_err = avg_cte*avg_cte;
       if(sq_err < best_err){
+        std::cout << "Testing " << print_statement << ": " << K << std::endl;
+        std::cout << "Best [Kp, Ki, Kd]: [" << Kp << "," << Ki << "," << Kd << "]" << std::endl;
         best_err = sq_err;
         dp *= 1.1;
         check_next = true;

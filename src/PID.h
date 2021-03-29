@@ -1,6 +1,6 @@
 #ifndef PID_H
 #define PID_H
-#include <vector>
+#include <chrono>
 
 class PID {
  public:
@@ -67,11 +67,21 @@ class PID {
    */
   int counter;
   int avg_interval;
+  bool update_cte;
   bool reverse_check;
   bool check_next;
-  std::vector<bool> reverse_checks;
   enum class TwiddleParam {P,I,D};
   TwiddleParam param;
+
+  /**
+   * Time Counters for Differential Error Calcs
+   */
+  typedef std::chrono::high_resolution_clock Time;
+  // typedef std::chrono::seconds s;
+  // typedef std::chrono::milliseconds ms;
+  typedef std::chrono::duration<float> fsec;
+
+  std::chrono::_V2::system_clock::time_point t0;
 };
 
 #endif  // PID_H

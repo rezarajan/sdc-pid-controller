@@ -39,7 +39,16 @@ int main() {
    * TODO: Initialize the pid variable.
    */
   // pid.Init(9.48728,0,2);
-  pid.Init(4,0,2);
+  // pid.Init(0.054529,0,-0.0458);
+  // pid.Init(-0.166495,0,-2.5225); // at 0.3 throttle
+  // pid.Init(-0.14,0,-2.3);
+  // pid.Init(-0.127113,0,-2.16097); // at 0.5 throttle
+  // pid.Init(-0.110036,0,-2.38847); // at 0.5 throttle
+  // pid.Init(-0.108265,0,-2.32772); // at 0.5 throttle
+  // pid.Init(-0.108265,0,-0.021); // at 0.5 throttle
+  // pid.Init(-0.102873,0,-2.29903); // at 0.5 throttle
+  // pid.Init(-0.0875,0,-2.31836); // at 0.5 throttle
+  pid.Init(-0.0975,0,-2.305); // at 0.5 throttle
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -59,7 +68,7 @@ int main() {
           double cte = std::stod(j[1]["cte"].get<string>());
           double speed = std::stod(j[1]["speed"].get<string>());
           double angle = std::stod(j[1]["steering_angle"].get<string>());
-          double steer_value;
+          double steer_value = 0.0;
           /**
            * TODO: Calculate steering value here, remember the steering value is
            *   [-1, 1].
@@ -73,7 +82,9 @@ int main() {
           // Update d_gains and wait for the robot to move
           // pid.Twiddle(cte);
           // Calculate New Steering Value
-          steer_value = std::max(-1.0, std::min(pid.TotalError(), 1.0));
+          steer_value -= pid.TotalError();
+          // std::cout << "Total Error: " << steer_value << std::endl;
+          steer_value = std::max(-1.0, std::min(steer_value, 1.0));
           
           // DEBUG
           // std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
@@ -81,7 +92,7 @@ int main() {
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.3;
+          msgJson["throttle"] = 0.5;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
