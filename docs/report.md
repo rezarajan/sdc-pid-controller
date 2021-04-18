@@ -30,7 +30,7 @@ The goals / steps of this project are the following:
 ---
 ## Implementation
 
-The following is a link to the [project code](https://github.com/rezarajan/sdc-pid-controller). Furthermore, a video showcasing the final PID controller implementation in the test track is available [here](https://) #TODO: Include final video YouTube link.
+The following is a link to the [project code](https://github.com/rezarajan/sdc-pid-controller). Furthermore, a video showcasing the final PID controller implementation in the test track is available [here](https://youtu.be/AJYaWOHqug8).
 
 ---
 
@@ -83,7 +83,7 @@ After a few trials of the online Twiddle algorithm, the following are the final 
 
 #### *3. The vehicle must successfully drive a lap around the track.*
 
-The vehicle is able to complete at least one lap around the track, staying on only the drivable surfaces. It does not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe. A video demonstrating the simulation for two consecutive laps is available [here](#https://#TODO).
+The vehicle is able to complete at least one lap around the track, staying on only the drivable surfaces. It does not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe. A video demonstrating the simulation for two consecutive laps is available [here](#https://youtu.be/AJYaWOHqug8).
 
 
 ---
