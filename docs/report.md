@@ -68,7 +68,7 @@ Clearly, the i-controller does not do much to help the car navigate the track.
 
 ### *PID Control*
 
-The [final controller]((https://youtu.be/AJYaWOHqug8)) includes function for the P, D and I terms. However, in the final controller only the P and D terms are assigned non-zero values, indicating that the car can successfully navigate solely on PD control, and that the i-term does not impact the vehicle's behaviour in any significant way.
+The [final controller](https://youtu.be/AJYaWOHqug8) includes function for the P, D and I terms. However, in the final controller only the P and D terms are assigned non-zero values, indicating that the car can successfully navigate solely on PD control, and that the i-term does not impact the vehicle's behaviour in any significant way.
 #### *2. Describe how the final hyperparameters were chosen.*
 
 Parameter-tuning is done using an online Twiddle algorithm, whereby the parameters are adjusted as the car drives around the track. This has proven to be a better solution than offline Twiddle, since the target is always moving. The inital parameters are selected from the [previous tests](#1-describe-the-effect-each-of-the-p-i-d-components-had-in-your-implementation), whereby each parameter is selected based on trial-and-error.
